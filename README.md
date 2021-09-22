@@ -28,9 +28,12 @@ Each m runspace would then be responsible for rebooting the virtual machines it 
 For example, you have 60 Hypervisor Hosts where each host services 30 Virtual Machines.
 The script will generate M number of runspaces, one for each host (H_01 all the way to H_m). 
 Each one of those Host runspaces will be responsible for generating and maintaining n number of runspaces (VM_01 all the way to VM_j)
+
+
        H_01        .............         H_m
     /        \     .............     /        \
-  VM_01 ... VM_j   .............   VM_01 ... VM_j 
+    VM_01 ... VM_j   .............   VM_01 ... VM_j 
+    
 Keep in mind, the value of J is going to flucuate between each hypervisor host.
 Host_01 can have 30 VMs and spawn 30 runspaces but Host_03 may have only 24 VMs and will only spawn 24 runspaces.
 The script acknowledges dynamic host usage and will react appropriately.
