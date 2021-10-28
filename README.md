@@ -2,18 +2,18 @@
 
 ## .SYNOPSIS
 
-Utility used for performing weekly reboots of all Non-persistent VDI Citrix machines. Non-persistent virtual machines relies on caching user changes to a local hard drive on each VM given the nature of the streamed-OS technology. Given that cache on each VM would fill up towards the tail-end of the week, this utility properly forces all used and un-used VMs to efficiently reboot and allows for prisistine cache drives to be available for users at the start of the work week.
+Utility used for performing weekly reboots of all Non-persistent VDI Citrix machines. Non-persistent virtual machines rely on caching user changes to a local hard drive on each VM due to the nature of the streamed-OS technology. Given that cache on each VM would fill up towards the tail-end of the week, this utility properly forces all 'used' and 'un-used' VMs to efficiently reboot and allows for prisistine cache drives to be available for users at the start of the work week.
 
 ## .DESCRIPTION
 
 Citrix currently has no utility to properly manage VDI reboots on an interval basis. Reboots are essential for business continuty to minimize user interruption when their cache drives are full and they either need to log off or are forcefully kicked-off due to crashing VM.
 
-Legacy reboot implementations lasted several hours to complete and ran in a linear fashion. This implementation has a total runtime of a few seconds and gives users a generous amount of time to comfortably save all of their work and log off. Users can then iommediately log back in to a freshly rebooted machine from the pool.
+Legacy reboot implementations lasted several hours to complete and ran in a linear fashion. This implementation has a total runtime of a few seconds and gives users a generous amount of time to comfortably save all of their work and log off. Users can then immediately log back in to a freshly rebooted machine from the pool.
 
 This script leverages multi-threading to accomplish all of the reboots. 
 
-Each thread responsible for a VM will provide the shutdown commend with a specified time interval.
-VM Scenarioes:
+Each thread responsible for a VM will provide the shutdown command with a specified time interval.
+VM Scenarios:
   1. An unused VM will be given the shutdown command with a random interval between 0 and 60 seconds.
     a. This allows for unused VMs to quickly reboot and be on standby for any active users that log off and want to log back immediately.
   3. A used VM but in a disconnected state will be given the shutdown command with a random interval between 20-40 minutes.
@@ -42,7 +42,7 @@ Once a thread detects one of the 3 scenarios listed above, it will offload the s
 
 ## .ACCOMPLISHMENTS/WHAT I LEARNED
 
-Legacy reboot implementations ran in a sequential fashion and leveraged Citrix Broker SDK for the reboot command. With this method, the Citrix Broker SDK will then send reboot requests to the vCenter for execution. All in all, you are incurring bottlenecks from Citrix Broker which limits about of power action commands done within a certain window as well as throttling from vCenter which limits amount of commands it can execute. By offloading the shutdown command to the client, we can bypass both of these limits and effectivly power manage the environment. Total runtime was reduced from a few hours to a few seconds. 
+Legacy reboot implementations ran in a sequential fashion and leveraged Citrix Broker SDK for the reboot command. With this method, the Citrix Broker SDK will then send reboot requests to the vCenter for execution. All in all, you are incurring bottlenecks from Citrix Broker which limits the amount of power action commands done within a certain window as well as throttling from vCenter which limits amount of commands it can execute. By offloading the shutdown command to the client, we can bypass both of these limits and effectivly power manage the environment. Total runtime was reduced from a few hours to a few seconds. 
 
 ## .AREAS OF IMPROVEMENT
 
